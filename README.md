@@ -85,6 +85,7 @@
 ```
 create table usuarios(
 id_usuario int auto_increment primary key,
+cpf varchar(14) unique not null,
 email varchar(100),
 senha varchar(100)
 );
@@ -148,6 +149,7 @@ CREATE TABLE filmes_avaliacao (
     
     FOREIGN KEY (fk_id_filme) REFERENCES filmes(id_filme)
 );
+
 
 ```
     
