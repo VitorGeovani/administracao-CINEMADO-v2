@@ -1,9 +1,16 @@
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
+/**
+ *
+ * @author vitor.gmsilva1
+ */
+
 public class editarProgramacao extends javax.swing.JFrame {
+    // Encapsulamento: atributo privado
     private int idProgramacao;
 
+    // Sobrecarga: dois construtores com assinaturas diferentes
     public editarProgramacao(int idProgramacao) {
         this.idProgramacao = idProgramacao;
         initComponents();
@@ -14,6 +21,7 @@ public class editarProgramacao extends javax.swing.JFrame {
         initComponents();
     }
 
+    // Tratamento de Exceção: bloco try-catch
     private void carregarDados() {
         try {
             appData app = new appData();
@@ -24,10 +32,6 @@ public class editarProgramacao extends javax.swing.JFrame {
                 txtData.setText(rs.getString("data"));
                 txtHora.setText(rs.getString("horario"));
                 txtLocal.setText(rs.getString("local"));
-
-                //Desabilitar a edição
-                // txtTitulo.setEnabled(false);
-                // txtDiretor2.setEnabled(false);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro ao carregar dados da programação: " + e.getMessage());
@@ -105,6 +109,7 @@ public class editarProgramacao extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
+    // Tratamento de Exceção: bloco try-catch
     private void btnEditarProgramacaoActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             appData app = new appData();
