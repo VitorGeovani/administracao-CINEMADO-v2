@@ -77,6 +77,16 @@
     <br />
     <sub><b>Gabrielle</b></sub><br />
      </td>
+      <td align="center"><a href="https://github.com/LucasCaldara">
+    <img src="https://avatars.githubusercontent.com/u/119446713?v=4" width="100px" alt="Imagem do perfil do Lucas"/>
+    <br />
+    <sub><b>Lucas</b></sub><br />
+     </td>
+        <td align="center"><a href="https://github.com/mayrakeylla">
+    <img src="https://avatars.githubusercontent.com/u/160505058?v=4" width="100px" alt="Imagem do perfil da Mayra"/>
+    <br />
+    <sub><b>Mayra</b></sub><br />
+     </td>
  </tr>
 </table>
 
