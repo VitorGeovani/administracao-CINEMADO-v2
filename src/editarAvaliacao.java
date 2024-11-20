@@ -75,6 +75,7 @@ public class editarAvaliacao extends javax.swing.JFrame { // Herança: editarAva
         btnEditarAvaliacao = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Editar Avaliação");
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jLabel2.setText("Título do Filme:");

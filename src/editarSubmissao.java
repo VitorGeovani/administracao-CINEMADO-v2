@@ -58,6 +58,7 @@ public class editarSubmissao extends javax.swing.JFrame { // Herança: editarSub
         btnEditarSubmissao = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Editar Filme");
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jLabel2.setText("Título do Filme:");

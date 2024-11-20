@@ -33,6 +33,7 @@ public class criarSubmissao extends javax.swing.JFrame {
         btnSubmeterFilme = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Submeter Filme");
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jLabel2.setText("Título do Filme:");

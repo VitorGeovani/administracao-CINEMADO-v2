@@ -103,6 +103,7 @@ public class criarAvaliacao extends javax.swing.JFrame {
         btnEnviarAvaliacao = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Avaliação de Filme");
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jLabel2.setText("Título do Filme:");

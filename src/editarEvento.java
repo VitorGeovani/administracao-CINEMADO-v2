@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 public class editarEvento extends javax.swing.JFrame {
     // Encapsulamento: Atributo privado
     private int idEvento;
-    
+
     // Construtor
     public editarEvento(int idEvento) {
         this.idEvento = idEvento;
@@ -51,6 +51,7 @@ public class editarEvento extends javax.swing.JFrame {
         btnEditarEvento = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Editar Evento");
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jLabel2.setText("Nome do evento:");
@@ -204,33 +205,35 @@ public class editarEvento extends javax.swing.JFrame {
             // Tenta converter a data e hora para garantir que estão no formato correto
             String data = txtData.getText();
             String hora = txtHora.getText();
-    
+
             // Validações de Data e Hora
             if (!data.matches("\\d{2}[-/]\\d{2}[-/]\\d{4}")) {
-                JOptionPane.showMessageDialog(null, "Por favor, insira uma data válida no formato dd/mm/aaaa ou dd-mm-aaaa.", "Erro de validação", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,
+                        "Por favor, insira uma data válida no formato dd/mm/aaaa ou dd-mm-aaaa.", "Erro de validação",
+                        JOptionPane.ERROR_MESSAGE);
                 return; // Não continua se a data for inválida
             }
-    
+
             if (!hora.matches("\\d{2}:\\d{2}")) {
-                JOptionPane.showMessageDialog(null, "Por favor, insira a hora no formato HH:mm.", "Erro de validação", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Por favor, insira a hora no formato HH:mm.", "Erro de validação",
+                        JOptionPane.ERROR_MESSAGE);
                 return; // Não continua se a hora for inválida
             }
-    
+
             // Chama o método editarEvento com os dados fornecidos
             appData app = new appData();
             app.editarEvento(idEvento, txtNome.getText(), data, hora, txtLocal.getText(), txtDescricao.getText());
-    
-            
+
             this.dispose(); // Fecha a janela de edição
         } catch (IllegalArgumentException e) {
             // Se a data ou hora forem inválidas, exibe a mensagem de erro
             JOptionPane.showMessageDialog(null, e.getMessage(), "Erro de validação", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             // Captura exceções gerais e mostra uma mensagem genérica de erro
-            JOptionPane.showMessageDialog(null, "Erro ao editar evento: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Erro ao editar evento: " + e.getMessage(), "Erro",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
-    
 
     public static void main(String args[]) {
         try {
@@ -242,16 +245,20 @@ public class editarEvento extends javax.swing.JFrame {
             }
         } catch (ClassNotFoundException ex) {
             // Tratamento de Exceção
-            java.util.logging.Logger.getLogger(editarEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(editarEvento.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
         } catch (InstantiationException ex) {
             // Tratamento de Exceção
-            java.util.logging.Logger.getLogger(editarEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(editarEvento.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
         } catch (IllegalAccessException ex) {
             // Tratamento de Exceção
-            java.util.logging.Logger.getLogger(editarEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(editarEvento.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             // Tratamento de Exceção
-            java.util.logging.Logger.getLogger(editarEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(editarEvento.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
         }
 
         java.awt.EventQueue.invokeLater(new Runnable() {

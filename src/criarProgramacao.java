@@ -45,6 +45,7 @@ public class criarProgramacao extends javax.swing.JFrame { // Herança: criarPro
         btnEnviarProgramacao = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Criar Programação");
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jLabel2.setText("Título do Filme:");

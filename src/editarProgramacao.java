@@ -60,6 +60,7 @@ public class editarProgramacao extends javax.swing.JFrame {
         btnEditarProgramacao = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Editar Programação");
         getContentPane().setLayout(null);
 
         // Título
