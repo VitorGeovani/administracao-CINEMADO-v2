@@ -198,22 +198,53 @@ public class criarProgramacao extends javax.swing.JFrame { // Herança: criarPro
         String local = txtLocal.getText();
         String titulo = txtTitulo.getText();
         String diretor = txtDiretor.getText();
-
-        try { // Tratamento de Exceção: bloco try-catch
+    
+        // Validação de Data (formato dd/mm/aaaa ou dd-mm-aaaa)
+        if (!validarData(data)) {
+            JOptionPane.showMessageDialog(null, "Erro: Data inválida! Use o formato dd/mm/aaaa ou dd-mm-aaaa.", "Erro de Validação", JOptionPane.ERROR_MESSAGE);
+            return; // Interrompe a execução se a validação falhar
+        }
+    
+        // Validação de Hora (formato hh:mm)
+        if (!validarHora(hora)) {
+            JOptionPane.showMessageDialog(null, "Erro: Hora inválida! Use o formato hh:mm.", "Erro de Validação", JOptionPane.ERROR_MESSAGE);
+            return; // Interrompe a execução se a validação falhar
+        }
+    
+        try {
             new appData().criarProgramacao(idFilme, titulo, diretor, data, hora, local);
             JOptionPane.showMessageDialog(null, "Programação enviada com sucesso!");
-
+    
+            // Limpa os campos após envio
             txtTitulo.setText("");
             txtDiretor.setText("");
             txtData.setText("");
             txtHora.setText("");
             txtLocal.setText("");
-        } catch (ClassNotFoundException e) { // Tratamento de Exceção: captura de exceção específica
+
+            // Fecha a janela após envio
+            this.dispose();
+        } catch (ClassNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Erro ao tentar localizar o Driver JDBC");
-        } catch (Exception e) { // Tratamento de Exceção: captura de exceção genérica
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro ao tentar criar a programação: " + e.getMessage());
         }
     }
+    
+    // Validação de Data (dd/mm/aaaa ou dd-mm-aaaa)
+    private boolean validarData(String data) {
+        // Expressão regular para verificar o formato da data
+        String regexData = "^(0[1-9]|[12][0-9]|3[01])[-/]((0[1-9])|(1[0-2]))[-/][0-9]{4}$";
+        return data.matches(regexData);
+    }
+    
+    // Validação de Hora (hh:mm)
+    private boolean validarHora(String hora) {
+        // Expressão regular para verificar o formato da hora
+        String regexHora = "^([01]?[0-9]|2[0-3]):([0-5][0-9])$";
+        return hora.matches(regexHora);
+    }
+    
 
     public static void main(String args[]) {
         try { // Tratamento de Exceção: bloco try-catch

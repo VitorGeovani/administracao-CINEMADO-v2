@@ -21,24 +21,25 @@ public class criarAvaliacao extends javax.swing.JFrame {
     private static int idFilme;
 
     // Adicione essas declarações de campo à classe Avaliacao
-    private javax.swing.JTextField txtGenero;
     private javax.swing.JTextField txtClassificacao;
 
     // Método para preencher os campos com os detalhes do filme
     private void preencherCamposFilme() {
         txtTitulo.setText(tituloFilme);
         txtDiretor.setText(diretorFilme);
-        txtGenero.setText(generoFilme);
+        cnbGenero.setSelectedItem(generoFilme);
         txtDuracao.setText(duracaoFilme);
         txtData.setText(dataFilme);
-        txtClassificacao.setText(classificacaoFilme);
+        // O campo de classificação deve ser preenchido usando a variável classificacaoFilme
+        cnbClassificacao.setSelectedItem(classificacaoFilme);
+        
         // Desabilitar campos de filme para edição
         txtTitulo.setEnabled(false);
         txtDiretor.setEnabled(false);
-        txtGenero.setEnabled(false);
+        cnbGenero.setEnabled(false);
         txtDuracao.setEnabled(false);
         txtData.setEnabled(false);
-        txtClassificacao.setEnabled(false);
+        cnbClassificacao.setEnabled(false);
     }
 
     public criarAvaliacao(int idFilme) {
@@ -349,23 +350,35 @@ public class criarAvaliacao extends javax.swing.JFrame {
         String cinematografia = txtCinematografia.getText();
         String originalidade = txtOriginalidade.getText();
         String comentario = txtComentario.getText();
-        // Obter a classificação indicativa selecionada
-        String classificacao = cnbClassificacao.getSelectedItem().toString();
-        // Obter o gênero selecionado
-        String genero = cnbGenero.getSelectedItem().toString();
-
+    
+        // Verificar se os campos de Cinematografia e Originalidade são válidos (somente números, ponto ou vírgula)
+        if (!cinematografia.matches("[0-9,\\.]+") || !originalidade.matches("[0-9,\\.]+")) {
+            JOptionPane.showMessageDialog(null, "Por favor, insira apenas números com ponto ou vírgula para Cinematografia e Originalidade.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    
+        // Verificar se todos os campos estão preenchidos
+        if (cinematografia.isEmpty() || originalidade.isEmpty() || comentario.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos de avaliação.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    
         try {
+            // Enviar a avaliação para o banco de dados
             appData app = new appData();
             app.submeterAvaliacao(idFilme, cinematografia, originalidade, comentario);
-            JOptionPane.showMessageDialog(null, "Avaliação enviada com sucesso!");
-            dispose(); // Fechar a janela de avaliação após o envio
-
-            // Tratamento de Exceção: Captura de exceções de classe não encontrada e SQL
+    
+            // Mensagem de sucesso
+            JOptionPane.showMessageDialog(null, "Avaliação enviada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+    
+            // Fechar a janela após o envio
+            dispose();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Erro ao enviar avaliação: " + e.getMessage());
         }
     }
+    
 
     public static void main(String args[]) {
         try {

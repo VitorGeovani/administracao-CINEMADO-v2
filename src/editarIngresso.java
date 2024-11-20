@@ -249,6 +249,17 @@ public class editarIngresso extends javax.swing.JFrame {
     // Demonstrando Tratamento de Exceção
     private void btnEditarIngressoActionPerformed(java.awt.event.ActionEvent evt) {
         try {
+            // Tenta converter o valor das vagas para inteiro
+            int vagas = 0;
+            try {
+                vagas = Integer.parseInt(txtVagas.getText()); // Validando se vagas é um número inteiro
+            } catch (NumberFormatException e) {
+                // Caso ocorra erro ao converter, exibe uma mensagem de erro e retorna
+                JOptionPane.showMessageDialog(null, "Por favor, insira um número válido para as vagas!", "Erro", JOptionPane.ERROR_MESSAGE);
+                return; // Não continua o processo se a validação falhar
+            }
+    
+            // Chama o método editarIngresso com os dados fornecidos
             appData app = new appData();
             app.editarIngresso(
                 idIngresso,
@@ -257,14 +268,19 @@ public class editarIngresso extends javax.swing.JFrame {
                 txtData.getText(),
                 txtHora.getText(),
                 txtLocal.getText(),
-                Integer.parseInt(txtVagas.getText())
+                vagas // Passando como int
             );
-            JOptionPane.showMessageDialog(null, "Ingresso editado com sucesso!");
-            this.dispose();
+    
+            // Exibe a mensagem de sucesso
+            JOptionPane.showMessageDialog(null, "Ingresso editado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose(); // Fecha a janela de edição
         } catch (ClassNotFoundException | SQLException ex) {
+            // Captura exceções relacionadas ao banco de dados e à conexão
             JOptionPane.showMessageDialog(null, "Erro ao editar ingresso: " + ex.getMessage());
         }
     }
+    
+    
 
     public static void main(String args[]) {
         try {

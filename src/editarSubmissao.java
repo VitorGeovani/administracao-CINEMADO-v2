@@ -21,8 +21,7 @@ public class editarSubmissao extends javax.swing.JFrame { // Herança: editarSub
 
     private void preencherCampos(int idFilme) {
         try { // Tratamento de Exceção: uso de try-catch
-            appData app = new appData();
-            ResultSet rs = app.buscarFilme(idFilme);
+            ResultSet rs = app.buscarFilme(idFilme); // Usando a instância app já existente
             if (rs.next()) {
                 txtTitulo.setText(rs.getString("titulo"));
                 txtDiretor2.setText(rs.getString("diretor"));
@@ -33,7 +32,7 @@ public class editarSubmissao extends javax.swing.JFrame { // Herança: editarSub
                 cnbClassificacao.setSelectedItem(rs.getString("classificacao_indicativa"));
             }
         } catch (Exception e) { // Tratamento de Exceção: captura de exceção genérica
-            JOptionPane.showMessageDialog(null, "Erro ao preencher campos!");
+            JOptionPane.showMessageDialog(null, "Erro ao preencher campos! " + e.getMessage());
         }
     }
 
@@ -269,17 +268,31 @@ public class editarSubmissao extends javax.swing.JFrame { // Herança: editarSub
 
     private void btnEditarSubmissaoActionPerformed(java.awt.event.ActionEvent evt) {
         try { // Tratamento de Exceção: uso de try-catch
-            app.editarFilme(idFilme, txtTitulo.getText(), txtDiretor2.getText(), txtDuracao.getText(),
+            // Verificar se todos os campos obrigatórios estão preenchidos
+            if (txtTitulo.getText().isEmpty() || txtDiretor2.getText().isEmpty() ||
+                txtDuracao.getText().isEmpty() || txtSinpse.getText().isEmpty() || txtData.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Todos os campos devem ser preenchidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+    
+            // Tentar editar o filme
+            boolean sucesso = app.editarFilme(idFilme, txtTitulo.getText(), txtDiretor2.getText(), txtDuracao.getText(),
                     cnbGenero.getSelectedItem().toString(), txtSinpse.getText(), txtData.getText(),
                     cnbClassificacao.getSelectedItem().toString());
-
-            JOptionPane.showMessageDialog(null, "Filme editado com sucesso!");
-            this.dispose();
+            
+            // Verificar se a edição foi bem-sucedida
+            if (sucesso) {
+                JOptionPane.showMessageDialog(null, "Filme editado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose(); // Fechar a janela após a edição
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro ao editar filme! Verifique as informações.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+            
         } catch (Exception e) { // Tratamento de Exceção: captura de exceção genérica
-            JOptionPane.showMessageDialog(null, "Erro ao editar filme!" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao editar filme! " + e.getMessage());
         }
-
     }
+    
 
     public static void main(String args[]) {
         try { // Tratamento de Exceção: uso de try-catch

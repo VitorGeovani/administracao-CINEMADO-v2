@@ -26,17 +26,23 @@ public class editarProgramacao extends javax.swing.JFrame {
         try {
             appData app = new appData();
             ResultSet rs = app.buscarProgramacoesEditar(idProgramacao);
+            
             if (rs.next()) {
+                // Atribuindo os valores aos campos de texto
                 txtTitulo.setText(rs.getString("fk_titulo"));
                 txtDiretor2.setText(rs.getString("fk_diretor"));
                 txtData.setText(rs.getString("data"));
                 txtHora.setText(rs.getString("horario"));
                 txtLocal.setText(rs.getString("local"));
+            } else {
+                // Caso não encontre dados para o ID informado
+                JOptionPane.showMessageDialog(null, "Nenhuma programação encontrada para o ID informado.");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro ao carregar dados da programação: " + e.getMessage());
         }
     }
+    
 
     @SuppressWarnings("unchecked")
     private void initComponents() {
@@ -110,16 +116,42 @@ public class editarProgramacao extends javax.swing.JFrame {
     }
 
     // Tratamento de Exceção: bloco try-catch
-    private void btnEditarProgramacaoActionPerformed(java.awt.event.ActionEvent evt) {
-        try {
-            appData app = new appData();
-            app.editarProgramacao(idProgramacao, txtData.getText(), txtHora.getText(), txtLocal.getText());
-            JOptionPane.showMessageDialog(null, "Programação editada com sucesso!");
-            this.dispose();
-        } catch (Exception e) {
-            System.out.println("Erro ao editar programação: " + e.getMessage());
-        }
+private void btnEditarProgramacaoActionPerformed(java.awt.event.ActionEvent evt) {
+    // Validação para garantir que a data e a hora não contenham letras
+    if (!validarData(txtData.getText())) {
+        JOptionPane.showMessageDialog(null, "Erro: Data inválida! Use o formato dd/mm/aaaa ou dd-mm-aaaa, contendo apenas números.", "Erro de Validação", JOptionPane.ERROR_MESSAGE);
+        return; // Interrompe a execução se a validação falhar
     }
+    
+    if (!validarHora(txtHora.getText())) {
+        JOptionPane.showMessageDialog(null, "Erro: Hora inválida! Use o formato hh:mm, contendo apenas números.", "Erro de Validação", JOptionPane.ERROR_MESSAGE);
+        return; // Interrompe a execução se a validação falhar
+    }
+
+    try {
+        appData app = new appData();
+        app.editarProgramacao(idProgramacao, txtData.getText(), txtHora.getText(), txtLocal.getText());
+        JOptionPane.showMessageDialog(null, "Programação editada com sucesso!");
+        this.dispose();
+    } catch (Exception e) {
+        System.out.println("Erro ao editar programação: " + e.getMessage());
+    }
+}
+
+// Função para validar a Data (dd/mm/aaaa ou dd-mm-aaaa)
+private boolean validarData(String data) {
+    // Verifica se a data contém apenas números e está no formato correto
+    String regexData = "^(0[1-9]|[12][0-9]|3[01])[-/]((0[1-9])|(1[0-2]))[-/][0-9]{4}$";
+    return data.matches(regexData);
+}
+
+// Função para validar a Hora (hh:mm)
+private boolean validarHora(String hora) {
+    // Verifica se a hora contém apenas números e está no formato correto
+    String regexHora = "^([01]?[0-9]|2[0-3]):([0-5][0-9])$";
+    return hora.matches(regexHora);
+}
+
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {

@@ -116,7 +116,7 @@ public class Cadastrar extends javax.swing.JFrame {
         try {
             new appData().cadastrarUsuario(c, u, s);
             // avisar o user se os dados foram salvos
-            JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso");
+            JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             // limpar os campos
             txtCpf.setText("");
             txtEmail.setText("");
@@ -125,11 +125,11 @@ public class Cadastrar extends javax.swing.JFrame {
             this.dispose();
         } catch (ClassNotFoundException ex) {
             // Tratamento de Exceção
-            JOptionPane.showMessageDialog(null, "Erro ao tentar localizar o Driver JDBC");
+            JOptionPane.showMessageDialog(null, "Erro ao tentar localizar o Driver JDBC", "Erro", JOptionPane.ERROR_MESSAGE);
         } catch (SQLException ex) {
             // Tratamento de Exceção
             if (ex.getMessage().contains("Duplicate entry")) {
-                JOptionPane.showMessageDialog(null, "Usuário ja cadastrado.");
+                JOptionPane.showMessageDialog(null, "Usuário jÁ cadastrado.", "Erro", JOptionPane.ERROR_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "Erro na conexão com o Banco de dados:" + ex.getMessage());
             }

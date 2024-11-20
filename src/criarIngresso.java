@@ -35,6 +35,14 @@ public class criarIngresso extends javax.swing.JFrame { // Herança: criarIngres
                 txtData.setText(data);
                 txtHora.setText(horario);
                 txtLocal.setText(local);
+
+                // Desabilitar campos
+                txtTitulo.setEnabled(false);
+                txtDiretor.setEnabled(false);
+                txtData.setEnabled(false);
+                txtHora.setEnabled(false);
+                txtLocal.setEnabled(false);
+                
             } else {
                 JOptionPane.showMessageDialog(this, "Filme não encontrado!");
             }
@@ -243,32 +251,41 @@ public class criarIngresso extends javax.swing.JFrame { // Herança: criarIngres
         String data = txtData.getText();
         String hora = txtHora.getText();
         String local = txtLocal.getText();
-        int vagas = Integer.parseInt(txtVagas.getText());
-
-        try { // Tratamento de Exceção
+        String vagasStr = txtVagas.getText();
+    
+        try {
+            // Validação se o valor de vagas é um número inteiro
+            int vagas = Integer.parseInt(vagasStr); // Tentando converter o texto para inteiro
+            
             appData app = new appData();
             ResultSet rsProgramacao = app.isProgramacaoValida(data, hora, local);
+            
             if (rsProgramacao.next()) {
-                app.criarIngresso(idFilme, data, hora, local, vagas);
-                JOptionPane.showMessageDialog(this, "Ingresso criado com sucesso!");
-
+                app.criarIngresso(idFilme, data, hora, local, String.valueOf(vagas)); // Convertendo vagas para String
+                // A mensagem de sucesso ou erro será exibida diretamente na função criarIngresso
+    
                 // Limpar campos
                 txtData.setText("");
                 txtHora.setText("");
                 txtLocal.setText("");
                 txtVagas.setText("");
-
+    
                 // Fechar janela
                 this.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Programação não encontrada!");
+                JOptionPane.showMessageDialog(this, "Programação não encontrada!", "Erro", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (Exception e) { // Tratamento de Exceção
+        } catch (NumberFormatException e) {
+            // Se não for possível converter o texto para número, exibe mensagem de erro
+            JOptionPane.showMessageDialog(this, "Por favor, insira um número válido para as vagas!", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            // Tratamento de Exceção para outras falhas
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Erro ao criar ingresso: " + e.getMessage());
         }
     }
-
+    
+    
     public static void main(String args[]) {
         try { // Tratamento de Exceção
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

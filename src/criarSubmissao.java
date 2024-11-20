@@ -12,7 +12,7 @@ public class criarSubmissao extends javax.swing.JFrame {
     }
 
     @SuppressWarnings("unchecked")
-    
+
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
@@ -118,7 +118,9 @@ public class criarSubmissao extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(20, 60, 0, 0);
         getContentPane().add(jLabel3, gridBagConstraints);
 
-        cnbGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Romance", "Aventura", "Suspense", "Terror/Horror", "Ação", "Documentário", "Ficção científica", "Drama", "Comédia", "Fantasia", "Musical", "Mistério" }));
+        cnbGenero.setModel(new javax.swing.DefaultComboBoxModel<>(
+                new String[] { "Romance", "Aventura", "Suspense", "Terror/Horror", "Ação", "Documentário",
+                        "Ficção científica", "Drama", "Comédia", "Fantasia", "Musical", "Mistério" }));
         cnbGenero.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cnbGeneroItemStateChanged(evt);
@@ -196,7 +198,8 @@ public class criarSubmissao extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 60, 0, 0);
         getContentPane().add(jLabel7, gridBagConstraints);
 
-        cnbClassificacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Livre", "10 anos", "12 anos", "14 anos", "16 anos", "18 anos" }));
+        cnbClassificacao.setModel(new javax.swing.DefaultComboBoxModel<>(
+                new String[] { "Livre", "10 anos", "12 anos", "14 anos", "16 anos", "18 anos" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 6;
@@ -248,19 +251,26 @@ public class criarSubmissao extends javax.swing.JFrame {
 
     private void btnSubmeterFilmeActionPerformed(java.awt.event.ActionEvent evt) {
         String t, d, dur, g, s, dt, c;
-        t = txtTitulo.getText();
-        d = txtDiretor.getText();
-        dur = txtDuracao.getText();
+        t = txtTitulo.getText().trim();
+        d = txtDiretor.getText().trim();
+        dur = txtDuracao.getText().trim();
         g = cnbGenero.getSelectedItem().toString();
-        s = txtSinpse.getText();
-        dt = txtData.getText();
+        s = txtSinpse.getText().trim(); // Nome corrigido
+        dt = txtData.getText().trim();
         c = cnbClassificacao.getSelectedItem().toString();
 
-        try {
-                new appData().submeterFilme(t, d, dur, g, s, dt, c);
+        // Validação dos campos
+        if (t.isEmpty() || d.isEmpty() || dur.isEmpty() || s.isEmpty() || dt.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos obrigatórios.", "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-                // Avisar quando a submissão for realizada
-                JOptionPane.showMessageDialog(null, "Filme submetido com sucesso");
+        try {
+            boolean sucesso = new appData().submeterFilme(t, d, dur, g, s, dt, c);
+
+            if (sucesso) {
+                JOptionPane.showMessageDialog(null, "Filme submetido com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
                 // Limpar os campos
                 txtTitulo.setText("");
@@ -271,13 +281,15 @@ public class criarSubmissao extends javax.swing.JFrame {
                 txtData.setText("");
                 cnbClassificacao.setSelectedIndex(0);
 
-            } catch (ClassNotFoundException ex) {
-                // Tratamento de Exceção: Captura e trata a exceção ClassNotFoundException
-                JOptionPane.showMessageDialog(null, "Erro ao tentar localizar o Driver JDBC");
-            } catch (SQLException ex ) {
-                // Tratamento de Exceção: Captura e trata a exceção SQLException
-                JOptionPane.showMessageDialog(null, "Erro na conexão com o Banco de dados: " + ex.getMessage());
+                // Fechar a janela após limpar os campos
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro ao submeter o filme. Verifique os dados e tente novamente.", "Erro",
+                        JOptionPane.ERROR_MESSAGE);
             }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao conectar com o banco de dados: " + ex.getMessage());
+        }
     }
 
     public static void main(String args[]) {
@@ -289,13 +301,17 @@ public class criarSubmissao extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(criarSubmissao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(criarSubmissao.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(criarSubmissao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(criarSubmissao.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(criarSubmissao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(criarSubmissao.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(criarSubmissao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(criarSubmissao.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
         }
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -305,7 +321,8 @@ public class criarSubmissao extends javax.swing.JFrame {
         });
     }
 
-    // Encapsulamento: Uso de modificadores de acesso private para proteger os atributos
+    // Encapsulamento: Uso de modificadores de acesso private para proteger os
+    // atributos
     private javax.swing.JButton btnSubmeterFilme;
     private javax.swing.JComboBox<String> cnbClassificacao;
     private javax.swing.JComboBox<String> cnbGenero;

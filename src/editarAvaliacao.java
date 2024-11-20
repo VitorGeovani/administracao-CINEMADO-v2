@@ -18,32 +18,36 @@ public class editarAvaliacao extends javax.swing.JFrame { // Herança: editarAva
     }
 
     private void carregarDadosAvaliacao(int idAvaliacao) {
-        try { // Tratamento de Exceção: bloco try-catch
+        try { 
             appData app = new appData();
             ResultSet rs = app.buscarAvaliacao(idAvaliacao);
             if (rs.next()) {
-                txtTitulo.setText(rs.getString("titulo"));
-                txtDiretor.setText(rs.getString("diretor"));
-                cnbGenero.setSelectedItem(rs.getString("genero"));
-                txtDuracao.setText(rs.getString("duracao"));
-                txtData.setText(rs.getString("data_lancamento"));
-                cnbClassificacao.setSelectedItem(rs.getString("classificacao_indicativa"));
-                // Desabilitar edição dos campos que não devem ser editados
+                // Preencher os campos não editáveis
+                txtTitulo.setText(rs.getString("titulo") != null ? rs.getString("titulo") : "");
+                txtDiretor.setText(rs.getString("diretor") != null ? rs.getString("diretor") : "");
+                cnbGenero.setSelectedItem(rs.getString("genero") != null ? rs.getString("genero") : "");
+                txtDuracao.setText(rs.getString("duracao") != null ? rs.getString("duracao") : "");
+                txtData.setText(rs.getString("data_lancamento") != null ? rs.getString("data_lancamento") : "");
+                cnbClassificacao.setSelectedItem(rs.getString("classificacao_indicativa") != null ? rs.getString("classificacao_indicativa") : "");
+    
+                // Desabilitar campos que não podem ser editados
                 txtTitulo.setEnabled(false);
                 txtDiretor.setEnabled(false);
                 cnbGenero.setEnabled(false);
                 txtDuracao.setEnabled(false);
                 txtData.setEnabled(false);
                 cnbClassificacao.setEnabled(false);
-                // Permitir a edição dos campos desejados
-                txtCinematografia.setText(rs.getString("cinematografia"));
-                txtOriginalidade.setText(rs.getString("originalidade"));
-                txtComentario.setText(rs.getString("comentario_tecnico"));
+    
+                // Preencher os campos editáveis
+                txtCinematografia.setText(rs.getString("cinematografia") != null ? rs.getString("cinematografia") : "");
+                txtOriginalidade.setText(rs.getString("originalidade") != null ? rs.getString("originalidade") : "");
+                txtComentario.setText(rs.getString("comentario_tecnico") != null ? rs.getString("comentario_tecnico") : "");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro ao preencher campos!" + e.getMessage());
         }
     }
+    
 
     @SuppressWarnings("unchecked")
     
@@ -311,9 +315,21 @@ public class editarAvaliacao extends javax.swing.JFrame { // Herança: editarAva
     }
 
     private void btnEditarAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {
-        try { // Tratamento de Exceção: bloco try-catch
+        try {
+            // Validação dos campos Cinematografia e Originalidade
+            if (!validarNumeros(txtCinematografia.getText())) {
+                JOptionPane.showMessageDialog(this, "Erro: Cinematografia deve conter apenas números com 'vírgula' ou 'ponto'.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return; // Interrompe a execução se houver erro
+            }
+            
+            if (!validarNumeros(txtOriginalidade.getText())) {
+                JOptionPane.showMessageDialog(this, "Erro: Originalidade deve conter apenas números com 'vírgula' ou 'ponto'.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return; // Interrompe a execução se houver erro
+            }
+    
+            // Editar a avaliação
             appData app = new appData();
-            app.editarAvali(
+            boolean sucesso = app.editarAvali(
                 idAvaliacao,
                 txtTitulo.getText(),
                 txtDiretor.getText(),
@@ -325,12 +341,27 @@ public class editarAvaliacao extends javax.swing.JFrame { // Herança: editarAva
                 txtOriginalidade.getText(),
                 txtComentario.getText()
             );
-            JOptionPane.showMessageDialog(null, "Avaliação editada com sucesso!");
-            this.dispose();
+    
+            // Verifica o resultado da edição
+            if (sucesso) {
+                JOptionPane.showMessageDialog(null, "Avaliação editada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro: Não foi possível editar a avaliação.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+    
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao editar avaliação!");
+            JOptionPane.showMessageDialog(null, "Erro ao editar avaliação: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+    private boolean validarNumeros(String input) {
+        // Expressão regular que permite números, vírgula e ponto
+        String regex = "^[0-9]+([,.][0-9]+)?$";
+        return input.matches(regex);
+    }
+    
+    
 
     public static void main(String args[]) {
         try { // Tratamento de Exceção: bloco try-catch

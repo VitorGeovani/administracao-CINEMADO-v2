@@ -179,26 +179,57 @@ public class criarEvento extends javax.swing.JFrame {
     }
 
     private void btnCriarEventoActionPerformed(java.awt.event.ActionEvent evt) {
+        boolean sucesso = false; // Inicializa a variável de sucesso como false
+    
         try {
             String nome = txtNome.getText();
             String data = txtData.getText();
             String hora = txtHora.getText();
             String local = txtLocal.getText();
             String descricao = txtDescricao.getText();
-
+    
+            // Validação para Data (somente números e separadores / ou -)
+            if (!data.matches("\\d{2}[-/]\\d{2}[-/]\\d{4}")) {
+                JOptionPane.showMessageDialog(null, "Por favor, insira uma data válida no formato dd/mm/aaaa ou dd-mm-aaaa.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return; // Se a validação falhar, retorna sem continuar o processo
+            }
+    
+            // Validação para Hora (somente números no formato HH:mm)
+            if (!hora.matches("\\d{2}:\\d{2}")) {
+                JOptionPane.showMessageDialog(null, "Por favor, insira a hora no formato HH:mm.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return; // Se a validação falhar, retorna sem continuar o processo
+            }
+    
+            // Chama o método para criar o evento no banco de dados
             appData app = new appData();
             app.criarEvento(nome, data, hora, local, descricao);
-            JOptionPane.showMessageDialog(null, "Evento criado com sucesso!");
-
+    
+            sucesso = true; // Se o evento for criado com sucesso, define sucesso como true
+    
+            // Limpa os campos após a criação do evento
             txtNome.setText("");
             txtData.setText("");
             txtHora.setText("");
             txtLocal.setText("");
             txtDescricao.setText("");
+
+            
+    
         } catch (Exception e) {
             System.out.println("Erro ao criar evento: " + e.getMessage());
         }
+    
+        // Exibe a mensagem de sucesso ou erro com base no boolean sucesso
+        if (sucesso) {
+            JOptionPane.showMessageDialog(null, "Evento criado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+
+            // Fecha a janela após criação do evento
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Falha ao criar evento. Tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
+    
 
     public static void main(String args[]) {
         try {

@@ -134,10 +134,11 @@ public class Login extends javax.swing.JFrame { // Herança: Login herda de java
         try {
             ResultSet resultado = new appData().entrar(u, s);
             if(resultado.next()){
+                JOptionPane.showMessageDialog(null, "Bem-vindo(a) "+resultado.getString("email")+"!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 new Menu().setVisible(true);
                 
             } else {
-                JOptionPane.showMessageDialog(null, "Usuário e/ou senha inválidos.");
+                JOptionPane.showMessageDialog(null, "Usuário e/ou senha inválidos.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         } catch ( ClassNotFoundException ex){
             // Tratamento de Exceção

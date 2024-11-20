@@ -201,15 +201,36 @@ public class editarEvento extends javax.swing.JFrame {
 
     private void btnEditarEventoActionPerformed(java.awt.event.ActionEvent evt) {
         try {
+            // Tenta converter a data e hora para garantir que estão no formato correto
+            String data = txtData.getText();
+            String hora = txtHora.getText();
+    
+            // Validações de Data e Hora
+            if (!data.matches("\\d{2}[-/]\\d{2}[-/]\\d{4}")) {
+                JOptionPane.showMessageDialog(null, "Por favor, insira uma data válida no formato dd/mm/aaaa ou dd-mm-aaaa.", "Erro de validação", JOptionPane.ERROR_MESSAGE);
+                return; // Não continua se a data for inválida
+            }
+    
+            if (!hora.matches("\\d{2}:\\d{2}")) {
+                JOptionPane.showMessageDialog(null, "Por favor, insira a hora no formato HH:mm.", "Erro de validação", JOptionPane.ERROR_MESSAGE);
+                return; // Não continua se a hora for inválida
+            }
+    
+            // Chama o método editarEvento com os dados fornecidos
             appData app = new appData();
-            app.editarEvento(idEvento, txtNome.getText(), txtData.getText(), txtHora.getText(), txtLocal.getText(), txtDescricao.getText());
-            JOptionPane.showMessageDialog(null, "Evento editado com sucesso!");
-            this.dispose();
+            app.editarEvento(idEvento, txtNome.getText(), data, hora, txtLocal.getText(), txtDescricao.getText());
+    
+            
+            this.dispose(); // Fecha a janela de edição
+        } catch (IllegalArgumentException e) {
+            // Se a data ou hora forem inválidas, exibe a mensagem de erro
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Erro de validação", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
-            // Tratamento de Exceção
-            System.out.println("Erro ao criar evento: " + e.getMessage());
+            // Captura exceções gerais e mostra uma mensagem genérica de erro
+            JOptionPane.showMessageDialog(null, "Erro ao editar evento: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
 
     public static void main(String args[]) {
         try {
